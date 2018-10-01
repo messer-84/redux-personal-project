@@ -1,6 +1,8 @@
 // Core
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
+import { connect } from 'react-redux';
+import { toggleFavoriteTask } from '../../bus/task/action';
 
 // Instruments
 import Styles from './styles.m.css';
@@ -11,10 +13,17 @@ import Remove from '../../theme/assets/Remove';
 import Edit from '../../theme/assets/Edit';
 import Star from '../../theme/assets/Star';
 
-export default class Task extends PureComponent {
-    render () {
-        const { message, completed } = this.props;
+class Task extends PureComponent {
+    _toggleFavoriteTask = () => {
+        const { id } = this.props;
 
+        toggleFavoriteTask(id);
+    };
+
+    render () {
+        const { message, completed, favorite } = this.props;
+
+        console.log('render-id', this.props);
         const styles = cx(Styles.task, {
             [Styles.completed]: completed,
         });
@@ -32,11 +41,12 @@ export default class Task extends PureComponent {
                 </div>
                 <div className = { Styles.actions }>
                     <Star
-                        checked
+                        checked = { favorite }
                         inlineBlock
                         className = { Styles.toggleTaskFavoriteState }
                         color1 = '#3B8EF3'
                         color2 = '#000'
+                        onClick = { this._toggleFavoriteTask }
                     />
                     <Edit
                         inlineBlock
@@ -56,3 +66,8 @@ export default class Task extends PureComponent {
         );
     }
 }
+const mapStateToProps = (state) => ({
+    testStore: state,
+});
+
+export default connect(mapStateToProps, { toggleFavoriteTask })(Task);

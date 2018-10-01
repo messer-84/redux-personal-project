@@ -8,6 +8,8 @@ class Star extends Component {
     render () {
         const { hover, checked, disabled, color1, color2, color3 } = this.props;
 
+        // console.log('star', onClick);
+
         const fill = disabled ? color3 : hover ? color1 : color2;
 
         return checked ? (

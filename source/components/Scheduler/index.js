@@ -11,6 +11,8 @@ import Checkbox from '../../theme/assets/Checkbox';
 
 export default class Scheduler extends Component {
     render () {
+        console.log('tasks', tasks);
+
         const todoList = tasks.map((task) => (
             <Task
                 completed = { task.completed }

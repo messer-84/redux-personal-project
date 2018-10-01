@@ -64,12 +64,16 @@ const decorateSvg = (
         };
 
         _handleClick = () => {
+            console.log('click');
+
             this.setState(({ checked }) => ({
                 checked: !checked,
             }));
         };
 
         render () {
+            // console.log("withSVG", this.props.onClick);
+
             const { className, disabled } = this.props;
             const wrapperStyle = this._getWrapperStyle();
             const svgStyle = this._getSvgStyle();
