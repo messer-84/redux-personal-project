@@ -5,5 +5,5 @@ import { combineReducers } from 'redux';
 import { taskReducer } from '../bus/task/reducer';
 
 export const rootReducer = combineReducers({
-    task: taskReducer,
+    tasks: taskReducer,
 });

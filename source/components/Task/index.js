@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
 import { toggleFavoriteTask } from '../../bus/task/action';
+import { bindActionCreators } from 'redux';
 
 // Instruments
 import Styles from './styles.m.css';
@@ -15,15 +16,14 @@ import Star from '../../theme/assets/Star';
 
 class Task extends PureComponent {
     _toggleFavoriteTask = () => {
-        const { id } = this.props;
+        const { index } = this.props;
 
-        toggleFavoriteTask(id);
+        this.props.toggleFavorite(index);
     };
 
     render () {
         const { message, completed, favorite } = this.props;
 
-        console.log('render-id', this.props);
         const styles = cx(Styles.task, {
             [Styles.completed]: completed,
         });
@@ -66,8 +66,15 @@ class Task extends PureComponent {
         );
     }
 }
+
 const mapStateToProps = (state) => ({
-    testStore: state,
+    task: state.task,
 });
 
-export default connect(mapStateToProps, { toggleFavoriteTask })(Task);
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(
+        { toggleFavorite: toggleFavoriteTask },
+        dispatch
+    );
+
+export default connect(mapStateToProps, mapDispatchToProps)(Task);

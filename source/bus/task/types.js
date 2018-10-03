@@ -1,1 +1,2 @@
 export const TOGGLE_FAVORITE_TASK = 'TOGGLE_FAVORITE_TASK';
+export const ADD_TASK = 'ADD_TASK';
