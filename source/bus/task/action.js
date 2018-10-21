@@ -1,24 +1,26 @@
 import uniqid from 'uniqid';
 // Types
-import { TOGGLE_FAVORITE_TASK } from './types';
+import { types } from './types';
 
-export const addTask = (message) => {
-    return {
-        type:    'ADD_TASK',
-        payload: {
-            id: uniqid.time(),
-            message,
-        },
+export const taskActions = {
+    addTask: (message) => {
+        return {
+            type:    types.ADD_TASK,
+            payload: {
+                id: uniqid.time(),
+                message,
+            },
 
-    };
-};
+        };
+    },
 
-export const toggleFavoriteTask = (taskIndex) => {
-    console.log('taskIndexAction', taskIndex);
+    toggleFavoriteTask: (taskIndex) => {
+        console.log('taskIndexAction', taskIndex);
 
-    return {
-        type:    TOGGLE_FAVORITE_TASK,
-        payload: taskIndex,
-    };
+        return {
+            type:    types.TOGGLE_FAVORITE_TASK,
+            payload: taskIndex,
+        };
 
+    },
 };

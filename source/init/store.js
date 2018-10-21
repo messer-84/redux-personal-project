@@ -26,8 +26,11 @@ export const store = preloadedState
     ? createStore(rootReducer, preloadedState, enhancedStore)
     : createStore(rootReducer, enhancedStore);
 
+// export const store =  createStore(rootReducer, enhancedStore);
+
 store.subscribe(() => {
     const state = store.getState();
+console.log('localst', state);
 
     localStorage.setItem('tasks', JSON.stringify(state));
 });

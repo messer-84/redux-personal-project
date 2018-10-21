@@ -1,7 +1,7 @@
 // Core
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addTask } from '../../bus/task/action';
+import { taskActions } from '../../bus/task/action';
 import { bindActionCreators } from 'redux';
 // Instruments
 import Styles from './styles.m.css';
@@ -11,13 +11,30 @@ import Styles from './styles.m.css';
 import Task from '../Task';
 import Checkbox from '../../theme/assets/Checkbox';
 
-class Scheduler extends Component {
+const mapStateToProps = (state) => {
+    return {
+        tasks: state.tasks,
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators({
+            handleAddTask: taskActions.addTask,
+        },
+        dispatch),
+    };
+};
+
+@connect(mapStateToProps, mapDispatchToProps)
+export default class Scheduler extends Component {
     state = {
         taskField: '',
     };
     _handleAddTask = (e) => {
+        const { actions } = this.props;
+
         e.preventDefault();
-        this.props.handleAddTask(this.state.taskField);
+        actions.handleAddTask(this.state.taskField);
         this.setState({
             taskField: '',
         });
@@ -27,20 +44,23 @@ class Scheduler extends Component {
             taskField: e.target.value,
         });
     };
+
     render () {
         const { tasks } = this.props;
 
-        const todoList = tasks.map((task, index) => (
+        console.log('tasks', tasks);
+
+        const todoList = tasks ? tasks.map((task, index) => (
             <Task
-                completed = { task.completed }
-                favorite = { task.favorite }
-                id = { task.id }
+                completed = { task.get('completed') }
+                favorite = { task.get('favorite') }
+                id = { task.get('id') }
                 index = { index }
-                key = { task.id }
-                message = { task.message }
+                key = { task.get('id') }
+                message = { task.get('message') }
                 { ...task }
             />
-        ));
+        )) : <p>Test</p>;
 
         return (
             <section className = { Styles.scheduler }>
@@ -56,12 +76,13 @@ class Scheduler extends Component {
                                 maxLength = { 50 }
                                 placeholder = 'Описание моей новой задачи'
                                 type = 'text'
-                                value={this.state.taskField}
-                                onInput={this._handleInput}
+                                value = { this.state.taskField }
+                                onInput = { this._handleInput }
                             />
                             <button onClick = { this._handleAddTask }>Добавить задачу</button>
                         </form>
                         <div className = { Styles.overlay }>
+                            List
                             <ul>{todoList}</ul>
                         </div>
                     </section>
@@ -76,14 +97,3 @@ class Scheduler extends Component {
         );
     }
 }
-
-const mapStateToProps = (state) => ({
-    tasks: state.tasks,
-});
-const mapDispatchToProps = (dispatch) =>
-    bindActionCreators(
-        { handleAddTask: addTask },
-        dispatch
-    );
-
-export default connect(mapStateToProps, mapDispatchToProps)(Scheduler);
