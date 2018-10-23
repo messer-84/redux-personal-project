@@ -15,12 +15,15 @@ export const taskActions = {
     },
 
     toggleFavoriteTask: (taskIndex) => {
-        console.log('taskIndexAction', taskIndex);
-
         return {
             type:    types.TOGGLE_FAVORITE_TASK,
             payload: taskIndex,
         };
-
+    },
+    toggleCompletedTask: (taskIndex) => {
+        return {
+            type:    types.TOGGLE_COMPLETED_TASK,
+            payload: taskIndex,
+        };
     },
 };

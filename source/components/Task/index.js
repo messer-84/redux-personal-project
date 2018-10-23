@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import { connect } from 'react-redux';
-import { toggleFavoriteTask } from '../../bus/task/action';
+import { taskActions } from '../../bus/task/action';
 import { bindActionCreators } from 'redux';
 
 // Instruments
@@ -14,11 +14,28 @@ import Remove from '../../theme/assets/Remove';
 import Edit from '../../theme/assets/Edit';
 import Star from '../../theme/assets/Star';
 
-class Task extends PureComponent {
-    _toggleFavoriteTask = () => {
-        const { index } = this.props;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators({
+            toggleFavoriteTask:  taskActions.toggleFavoriteTask,
+            toggleCompletedTask: taskActions.toggleCompletedTask,
+        },
+        dispatch),
+    };
+};
 
-        this.props.toggleFavorite(index);
+@connect(null, mapDispatchToProps)
+export default class Task extends PureComponent {
+    _toggleFavoriteTask = () => {
+        const { actions, index } = this.props;
+
+        actions.toggleFavoriteTask(index);
+    };
+
+    _toggleCompletedTask = () => {
+        const { actions, index } = this.props;
+
+        actions.toggleCompletedTask(index);
     };
 
     render () {
@@ -33,16 +50,18 @@ class Task extends PureComponent {
                 <div className = { Styles.content }>
                     <Checkbox
                         inlineBlock
+                        checked = { completed }
                         className = { Styles.toggleTaskCompletedState }
                         color1 = '#3B8EF3'
                         color2 = '#FFF'
+                        onClick = { this._toggleCompletedTask }
                     />
                     <input disabled type = 'text' value = { message } />
                 </div>
                 <div className = { Styles.actions }>
                     <Star
-                        checked = { favorite }
                         inlineBlock
+                        checked = { favorite }
                         className = { Styles.toggleTaskFavoriteState }
                         color1 = '#3B8EF3'
                         color2 = '#000'
@@ -66,15 +85,3 @@ class Task extends PureComponent {
         );
     }
 }
-
-const mapStateToProps = (state) => ({
-    task: state.task,
-});
-
-const mapDispatchToProps = (dispatch) =>
-    bindActionCreators(
-        { toggleFavorite: toggleFavoriteTask },
-        dispatch
-    );
-
-export default connect(mapStateToProps, mapDispatchToProps)(Task);

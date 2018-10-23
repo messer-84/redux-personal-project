@@ -17,20 +17,18 @@ const logger = createLogger({
     },
 });
 
-const preloadedState = JSON.parse(localStorage.getItem('tasks'));
+// const preloadedState = JSON.parse(localStorage.getItem('tasks'));
 const devtools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 const composeEnhancers = devtools ? devtools : compose;
 const enhancedStore = composeEnhancers(applyMiddleware(logger));
 
-export const store = preloadedState
-    ? createStore(rootReducer, preloadedState, enhancedStore)
-    : createStore(rootReducer, enhancedStore);
+// export const store = preloadedState
+//     ? createStore(rootReducer, preloadedState, enhancedStore)
+//     : createStore(rootReducer, enhancedStore);
 
-// export const store =  createStore(rootReducer, enhancedStore);
+export const store =  createStore(rootReducer, enhancedStore);
 
 store.subscribe(() => {
     const state = store.getState();
-console.log('localst', state);
-
     localStorage.setItem('tasks', JSON.stringify(state));
 });

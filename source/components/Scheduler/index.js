@@ -47,10 +47,9 @@ export default class Scheduler extends Component {
 
     render () {
         const { tasks } = this.props;
+        console.log(tasks);
 
-        console.log('tasks', tasks);
-
-        const todoList = tasks ? tasks.map((task, index) => (
+        const todoList = tasks.map((task, index) => (
             <Task
                 completed = { task.get('completed') }
                 favorite = { task.get('favorite') }
@@ -60,7 +59,7 @@ export default class Scheduler extends Component {
                 message = { task.get('message') }
                 { ...task }
             />
-        )) : <p>Test</p>;
+        ));
 
         return (
             <section className = { Styles.scheduler }>
@@ -82,7 +81,6 @@ export default class Scheduler extends Component {
                             <button onClick = { this._handleAddTask }>Добавить задачу</button>
                         </form>
                         <div className = { Styles.overlay }>
-                            List
                             <ul>{todoList}</ul>
                         </div>
                     </section>
